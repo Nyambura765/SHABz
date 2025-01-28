@@ -7,13 +7,23 @@ SHABz is an innovative Social Token Economy Platform designed to revolutionize f
 FEATURES
 
 Token Minting and Management: Creators can mint tiered tokens converted into "gFeaturesifts" with varying levels of exclusivity.
+
 Premium Content Unlocks: Tokens grant fans access to premium content, personalized shoutouts, and exclusive experiences.
+
 NFT Marketplace: Fans can buy, sell, and upgrade NFTs that unlock additional benefits.
+
 P2P Token Trading: Facilitates direct token exchanges between users.
+
 Escrow System: Ensures secure transactions between fans and creators.
+
 Wallet Integration: Fans can store tokens and NFTs securely within the platform.
+
 Cross-Creation Collaborations: Enables creators to collaborate and offer joint experiences.
+
 AI-Powered Content Recommendations: Enhances user experience through tailored suggestions.
+
 Gamification: Fans earn tokens by engaging with content and participating in platform activities.
+
 Personalized Token Airdrops: Rewards fans with exclusive tokens and benefits.
+
 In-App Messaging System: Encourages seamless communication between fans and creators.

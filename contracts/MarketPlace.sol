@@ -1,38 +1,35 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// Interfaces for ERC-20 and ERC-721
-interface IERC20 {
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
-    function transfer(address recipient, uint256 amount) external returns (bool);
-}
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-interface IERC721 {
-    function ownerOf(uint256 tokenId) external view returns (address);
-    function transferFrom(address from, address to, uint256 tokenId) external;
+interface IERC721Mintable is IERC721 {
     function mint(address to, string memory metadataURI) external returns (uint256);
 }
+ 
 
 contract NFTMarketplace {
-
+    using SafeERC20 for IERC20;  // Using SafeERC20 for safe token transfers
     IERC20 public token;  // Reference to the ERC-20 token
-    IERC721 public nftContract;  // Reference to the ERC-721 NFT contract
-
+    IERC721Mintable public nftContract;  // Reference to the ERC-721 NFT contract
+     
     uint256 public marketplaceFee = 2;  // 2% marketplace fee
     address public feeRecipient;
-
+    
     struct Auction {
         uint256 tokenId;
         uint256 highestBid;
         address highestBidder;
         uint256 endTime;
     }
-
+    
     mapping(uint256 => uint256) public nftPrice;
     mapping(uint256 => address) public nftSeller;
     mapping(uint256 => Auction) public nftAuctions;
     mapping(uint256 => string) public nftUpgrades;
-
+    
     event NFTListed(uint256 indexed tokenId, uint256 price, address seller);
     event NFTSold(uint256 indexed tokenId, address buyer, uint256 price);
     event NFTUpgraded(uint256 indexed tokenId, string newMetadata);
@@ -41,7 +38,7 @@ contract NFTMarketplace {
     event AuctionEnded(uint256 indexed tokenId, address winner, uint256 finalBid);
 
     constructor(address _nftContract, address _token, address _feeRecipient) {
-        nftContract = IERC721(_nftContract);
+        nftContract = IERC721Mintable(_nftContract);
         token = IERC20(_token);
         feeRecipient = _feeRecipient;
     }
@@ -75,21 +72,19 @@ contract NFTMarketplace {
         uint256 price = nftPrice[tokenId];
         address seller = nftSeller[tokenId];
         require(price > 0, "NFT not for sale");
-
         uint256 fee = (price * marketplaceFee) / 100;
         uint256 sellerAmount = price - fee;
-
+        
         // Transfer fee to marketplace and the rest to the seller
-        token.transferFrom(msg.sender, feeRecipient, fee);
-        token.transferFrom(msg.sender, seller, sellerAmount);
-
+        token.safeTransferFrom(msg.sender, feeRecipient, fee);  // Using SafeERC20
+        token.safeTransferFrom(msg.sender, seller, sellerAmount);  // Using SafeERC20
+        
         // Transfer NFT ownership
         nftContract.transferFrom(seller, msg.sender, tokenId);
-
+        
         // Reset sale data
         nftPrice[tokenId] = 0;
         nftSeller[tokenId] = address(0);
-
         emit NFTSold(tokenId, msg.sender, price);
     }
 
@@ -102,25 +97,26 @@ contract NFTMarketplace {
             highestBidder: address(0),
             endTime: block.timestamp + duration
         });
-
         emit AuctionStarted(tokenId, startingBid, block.timestamp + duration);
     }
 
     // Place a bid on an auction
-    function placeBid(uint256 tokenId) public payable {
+    function placeBid(uint256 tokenId, uint256 amount) public {
         Auction storage auction = nftAuctions[tokenId];
         require(block.timestamp < auction.endTime, "Auction ended");
-        require(msg.value > auction.highestBid, "Bid must be higher than the current bid");
-
+        require(amount > auction.highestBid, "Bid must be higher than the current bid");
+        
         // Refund the previous highest bidder
         if (auction.highestBidder != address(0)) {
-            payable(auction.highestBidder).transfer(auction.highestBid);
+            token.safeTransfer(auction.highestBidder, auction.highestBid);
         }
-
-        auction.highestBid = msg.value;
+        
+        // Transfer the bid amount from the bidder
+        token.safeTransferFrom(msg.sender, address(this), amount);
+        
+        auction.highestBid = amount;
         auction.highestBidder = msg.sender;
-
-        emit BidPlaced(tokenId, msg.sender, msg.value);
+        emit BidPlaced(tokenId, msg.sender, amount);
     }
 
     // End auction and transfer the NFT to the highest bidder
@@ -128,16 +124,23 @@ contract NFTMarketplace {
         Auction storage auction = nftAuctions[tokenId];
         address winner = auction.highestBidder;
         uint256 finalBid = auction.highestBid;
-
-        // Transfer NFT to the winner
-        nftContract.transferFrom(nftSeller[tokenId], winner, tokenId);
-
-        // Transfer funds to the seller
-        payable(nftSeller[tokenId]).transfer(finalBid);
-
-        // Reset auction data
-        delete nftAuctions[tokenId];
-
+        
+        if (winner != address(0)) {
+            // Calculate fees and transfer funds
+            uint256 fee = (finalBid * marketplaceFee) / 100;
+            uint256 sellerAmount = finalBid - fee;
+            
+            // Transfer fee to marketplace and the rest to the seller
+            token.safeTransfer(feeRecipient, fee);
+            token.safeTransfer(nftSeller[tokenId], sellerAmount);
+            
+            // Transfer NFT ownership
+            nftContract.transferFrom(nftSeller[tokenId], winner, tokenId);
+        } else {
+            // If no bids were placed, reset auction data
+            delete nftAuctions[tokenId];
+        }
+        
         emit AuctionEnded(tokenId, winner, finalBid);
     }
 
@@ -151,31 +154,29 @@ contract NFTMarketplace {
     function buyNFTWithToken(uint256 tokenId, uint256 amount) public {
         uint256 price = nftPrice[tokenId];
         require(amount >= price, "Insufficient token balance");
-
         uint256 fee = (price * marketplaceFee) / 100;
         uint256 sellerAmount = price - fee;
-
+        
         // Transfer fee to marketplace and the rest to the seller
-        token.transferFrom(msg.sender, feeRecipient, fee);
-        token.transferFrom(msg.sender, nftSeller[tokenId], sellerAmount);
-
+        token.safeTransferFrom(msg.sender, feeRecipient, fee);  // Using SafeERC20
+        token.safeTransferFrom(msg.sender, nftSeller[tokenId], sellerAmount);  // Using SafeERC20
+        
         // Transfer NFT ownership
         nftContract.transferFrom(nftSeller[tokenId], msg.sender, tokenId);
-
+        
         // Reset sale data
         nftPrice[tokenId] = 0;
         nftSeller[tokenId] = address(0);
-
         emit NFTSold(tokenId, msg.sender, price);
     }
 
-    // Set marketplace fee (only owner can change)
+    // Set marketplace fee (only fee recipient can change)
     function setMarketplaceFee(uint256 newFee) external {
         require(msg.sender == feeRecipient, "Only fee recipient can change fee");
         marketplaceFee = newFee;
     }
 
-    // Set new fee recipient (only owner can change)
+    // Set new fee recipient (only fee recipient can change)
     function setFeeRecipient(address newFeeRecipient) external {
         require(msg.sender == feeRecipient, "Only fee recipient can change");
         feeRecipient = newFeeRecipient;

@@ -11,8 +11,11 @@
   "type": "commonjs",
   "description": "",
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "hardhat": "^2.22.18"
+    "chai": "^4.2.0",
+    "hardhat": "^2.22.18",
+    "mocha": "^11.1.0"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.2.0"

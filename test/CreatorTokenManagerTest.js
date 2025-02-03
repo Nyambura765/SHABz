@@ -13,8 +13,11 @@ describe("CreatorTokenManager", function () {
         [owner, addr1, addr2] = await ethers.getSigners();
 
         const CreatorTokenManager = await ethers.getContractFactory("CreatorTokenManager");
+        console.log("Deploying CreatorTokenManager...");
         creatorTokenManager = await CreatorTokenManager.deploy();
-        await creatorTokenManager.deployed();  // Ensure it is deployed before use
+        console.log("Deploying CreatorTokenManager...");
+        await creatorTokenManager.deployed(); 
+        console.log("Contract deployed successfully.");
     });
 
     describe("Deployment", function () {
@@ -27,7 +30,7 @@ describe("CreatorTokenManager", function () {
         it("Should allow the owner to create a token", async function () {
             await creatorTokenManager.createToken(name, symbol);
             const tokenAddress = await creatorTokenManager.getTokenAddress(owner.address);
-            expect(tokenAddress).to.not.equal(ethers.constants.AddressZero); // Fixed import
+            expect(tokenAddress).to.not.equal(ethers.constants.AddressZero); 
         });
 
         it("Should not allow creating multiple tokens for the same owner", async function () {

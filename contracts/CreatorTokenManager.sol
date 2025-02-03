@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./CreatorToken.sol"; // Import the CreatorToken contract
 
-contract CreatorTokenManager is Ownable (msg.sender) {
+contract CreatorTokenManager is Ownable {
     struct Tier {
         string name;       // Name of the tier (e.g., Bronze, Silver, Gold)
         uint256 supply;    // Maximum supply for the tier
@@ -25,6 +25,9 @@ contract CreatorTokenManager is Ownable (msg.sender) {
     event TokensMinted(address indexed token, address indexed recipient, uint256 tierId, uint256 amount);
     // Event for burning tokens
     event TokensBurned(address indexed token, address indexed creator, uint256 amount);
+
+    // Constructor explicitly calls the Ownable constructor with msg.sender
+    constructor() Ownable(msg.sender) {}
 
     function createToken(string memory name, string memory symbol) external {
         require(creatorTokens[msg.sender] == address(0), "Token already created");

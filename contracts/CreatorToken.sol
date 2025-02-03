@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract CreatorToken is ERC20 {
     address public creator;
 
-    modifier onlyCreator() {
+    modifier onlyOwner() {
         require(msg.sender == creator, "Not the creator");
         _;
     }
@@ -15,11 +15,11 @@ contract CreatorToken is ERC20 {
         creator = _creator;
     }
 
-    function mint(address to, uint256 amount) external onlyCreator {
+    function mint(address to, uint256 amount) external onlyOwner {
         _mint(to, amount);
     }
 
-    function burn(address from, uint256 amount) external onlyCreator {
+    function burn(address from, uint256 amount) external onlyOwner {
         _burn(from, amount);
     }
 }

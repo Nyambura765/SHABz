@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "IERC721Mintable",
-  "sourceName": "contracts/MarketPlace.sol",
+  "sourceName": "contracts/NFTMarketplace.sol",
   "abi": [
     {
       "anonymous": false,

@@ -13,10 +13,8 @@ describe("CreatorTokenManager", function () {
         [owner, addr1, addr2] = await ethers.getSigners();
 
         const CreatorTokenManager = await ethers.getContractFactory("CreatorTokenManager");
-        console.log("Deploying CreatorTokenManager...");
-        creatorTokenManager = await CreatorTokenManager.deploy();
-        console.log("Deploying CreatorTokenManager...");
-        await creatorTokenManager.deployed(); 
+        creatorTokenManager = await CreatorTokenManager.deploy(); 
+
         console.log("Contract deployed successfully.");
     });
 
@@ -30,7 +28,7 @@ describe("CreatorTokenManager", function () {
         it("Should allow the owner to create a token", async function () {
             await creatorTokenManager.createToken(name, symbol);
             const tokenAddress = await creatorTokenManager.getTokenAddress(owner.address);
-            expect(tokenAddress).to.not.equal(ethers.constants.AddressZero); 
+            expect(tokenAddress).to.not.equal(ethers.ZeroAddress); 
         });
 
         it("Should not allow creating multiple tokens for the same owner", async function () {
@@ -52,7 +50,7 @@ describe("CreatorTokenManager", function () {
             const tierId = 1;
             const tierName = "Bronze";
             const tierSupply = 100;
-            const tierPrice = ethers.utils.parseEther("0.01"); // Fixed import
+            const tierPrice = ethers.parseEther("0.01"); // Fixed import
 
             await creatorTokenManager.addTier(this.tokenAddress, tierId, tierName, tierSupply, tierPrice);
 
@@ -66,7 +64,7 @@ describe("CreatorTokenManager", function () {
             const tierId = 1;
             const tierName = "Bronze";
             const tierSupply = 100;
-            const tierPrice = ethers.utils.parseEther("0.01"); // Fixed import
+            const tierPrice = ethers.parseEther("0.01"); // Fixed import
 
             await creatorTokenManager.addTier(this.tokenAddress, tierId, tierName, tierSupply, tierPrice);
 
@@ -85,7 +83,7 @@ describe("CreatorTokenManager", function () {
             const tierId = 1;
             const tierName = "Bronze";
             const tierSupply = 100;
-            const tierPrice = ethers.utils.parseEther("0.01"); // Fixed import
+            const tierPrice = ethers.parseEther("0.01"); // Fixed import
 
             await creatorTokenManager.addTier(this.tokenAddress, tierId, tierName, tierSupply, tierPrice);
             this.tierId = tierId;
@@ -93,7 +91,7 @@ describe("CreatorTokenManager", function () {
 
         it("Should allow the owner to mint tokens within the tier supply", async function () {
             const amount = 10;
-            const value = ethers.utils.parseEther("0.1"); // Fixed import
+            const value = ethers.parseEther("0.1"); // Fixed import
 
             await creatorTokenManager.mintTokens(this.tokenAddress, this.tierId, amount, addr1.address, { value });
 
@@ -104,7 +102,7 @@ describe("CreatorTokenManager", function () {
 
         it("Should not allow minting tokens if the tier supply is exceeded", async function () {
             const amount = 101; // Exceeds tier supply
-            const value = ethers.utils.parseEther("1.01"); // Fixed import
+            const value = ethers.parseEther("1.01"); // Fixed import
 
             await expect(
                 creatorTokenManager.mintTokens(this.tokenAddress, this.tierId, amount, addr1.address, { value })
@@ -113,7 +111,7 @@ describe("CreatorTokenManager", function () {
 
         it("Should not allow minting tokens if the payment is insufficient", async function () {
             const amount = 10;
-            const value = ethers.utils.parseEther("0.05"); // Insufficient payment, fixed import
+            const value = ethers.parseEther("0.05"); // Insufficient payment, fixed import
 
             await expect(
                 creatorTokenManager.mintTokens(this.tokenAddress, this.tierId, amount, addr1.address, { value })
@@ -130,13 +128,13 @@ describe("CreatorTokenManager", function () {
             const tierId = 1;
             const tierName = "Bronze";
             const tierSupply = 100;
-            const tierPrice = ethers.utils.parseEther("0.01"); // Fixed import
+            const tierPrice = ethers.parseEther("0.01"); // Fixed import
 
             await creatorTokenManager.addTier(this.tokenAddress, tierId, tierName, tierSupply, tierPrice);
             this.tierId = tierId;
 
             const amount = 10;
-            const value = ethers.utils.parseEther("0.1"); // Fixed import
+            const value = ethers.parseEther("0.1"); // Fixed import
             await creatorTokenManager.mintTokens(this.tokenAddress, this.tierId, amount, owner.address, { value });
         });
 
@@ -147,7 +145,7 @@ describe("CreatorTokenManager", function () {
 
             const tokenContract = await ethers.getContractAt("CreatorToken", this.tokenAddress);
             const balance = await tokenContract.balanceOf(owner.address);
-            expect(balance).to.equal(5); // 10 - 5 = 5
+            expect(balance).to.equal(5); 
         });
     });
 });

@@ -17,15 +17,15 @@ describe("SHABzPlatform", function () {
     // Deploy token manager, NFT marketplace, and payment escrow contract first
     const CreatorTokenManager = await ethers.getContractFactory("CreatorTokenManager");
     creatorTokenManager = await CreatorTokenManager.deploy();
-    await creatorTokenManager.deployed();
+    
 
     const NFTMarketplace = await ethers.getContractFactory("NFTMarketplace");
     nftMarketplace = await NFTMarketplace.deploy();
-    await nftMarketplace.deployed();
+    
 
     const PaymentEscrow = await ethers.getContractFactory("PaymentEscrow");
     paymentEscrow = await PaymentEscrow.deploy("0x0000000000000000000000000000000000000000", owner.address);
-    await paymentEscrow.deployed();
+    
 
     // Deploy SHABzPlatform contract
     SHABzPlatform = await ethers.getContractFactory("SHABzPlatform");

@@ -267,86 +267,6 @@
         "IERC20Metadata"
       ]
     },
-    "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\MarketPlace.sol": {
-      "lastModificationDate": 1738261544599,
-      "contentHash": "85971ee671f1bbee09c331a552ec91c7",
-      "sourceName": "contracts/MarketPlace.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
-        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC721Mintable",
-        "NFTMarketplace"
-      ]
-    },
-    "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\ContentAccess.sol": {
-      "lastModificationDate": 1738088892710,
-      "contentHash": "06be63811607ebf9e4952ce328e26225",
-      "sourceName": "contracts/ContentAccess.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ContentAccess"
-      ]
-    },
     "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\PaymentEscrow.sol": {
       "lastModificationDate": 1738145437179,
       "contentHash": "62641cafa65778204e1e06cb40093b41",
@@ -611,8 +531,8 @@
       ]
     },
     "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\ShabzPlatform.sol": {
-      "lastModificationDate": 1738315242725,
-      "contentHash": "8ac3aac08e00a173e67006ad4ac514ab",
+      "lastModificationDate": 1739028504189,
+      "contentHash": "40854ac22f97f1c7903b2ba0f1d1f509",
       "sourceName": "contracts/ShabzPlatform.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -641,7 +561,7 @@
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
         "./CreatorTokenManager.sol",
-        "./MarketPlace.sol",
+        "./NFTMarketplace.sol",
         "./PaymentEscrow.sol"
       ],
       "versionPragmas": [
@@ -687,6 +607,48 @@
       ],
       "artifacts": [
         "CreatorToken"
+      ]
+    },
+    "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\NFTMarketplace.sol": {
+      "lastModificationDate": 1739086751112,
+      "contentHash": "c4dd6937ec83c796010ad4446c75535c",
+      "sourceName": "contracts/NFTMarketplace.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721Mintable",
+        "NFTMarketplace"
       ]
     }
   }

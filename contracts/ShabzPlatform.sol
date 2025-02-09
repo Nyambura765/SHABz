@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./CreatorTokenManager.sol"; // Full Token contract 
-import "./MarketPlace.sol"; // Full NFT marketplace contract
+import "./NFTMarketplace.sol"; // Full NFT marketplace contract
 import "./PaymentEscrow.sol"; // Full Payment escrow contract
 
 contract SHABzPlatform is Ownable (msg.sender) {

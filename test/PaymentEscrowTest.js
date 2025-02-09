@@ -11,7 +11,7 @@ describe("PaymentEscrow", function () {
     [owner, buyer, creator, platformWallet] = await ethers.getSigners();
 
     // Deploy a mock ERC20 token (stablecoin)
-    const Stablecoin = await ethers.getContractFactory("ERC20");
+    const Stablecoin = await ethers.getContractFactory("CreatorToken");
     stablecoin = await Stablecoin.deploy("Stablecoin", "STBL", 1000000);
     await stablecoin.deployed();
 

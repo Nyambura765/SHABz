@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./NFT.sol";
 
 interface IERC721Mintable is IERC721 {
     function mint(address to, string memory metadataURI) external returns (uint256);
@@ -64,7 +65,7 @@ contract NFTMarketplace is Ownable {
         emit NFTListed(tokenId, price, msg.sender);
     }
 
-    function buyNFT(uint256 tokenId) external {
+    function buyNFT(uint256 tokenId) external payable {
         uint256 price = nftPrice[tokenId];
         address seller = nftSeller[tokenId];
         require(price > 0, "NFT not for sale");
@@ -72,6 +73,7 @@ contract NFTMarketplace is Ownable {
         uint256 sellerAmount = price - fee;
         
         token.safeTransferFrom(msg.sender, feeRecipient, fee);
+        
         token.safeTransferFrom(msg.sender, seller, sellerAmount);
         nftContract.transferFrom(seller, msg.sender, tokenId);
         

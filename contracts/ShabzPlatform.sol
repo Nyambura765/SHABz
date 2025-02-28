@@ -2,9 +2,9 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./CreatorTokenManager.sol"; // Full Token contract 
-import "./NFTMarketplace.sol"; // Full NFT marketplace contract
-import "./PaymentEscrow.sol"; // Full Payment escrow contract
+import "./CreatorTokenManager.sol";  
+import "./NFTMarketplace.sol"; 
+import "./PaymentEscrow.sol"; 
 
 contract SHABzPlatform is Ownable (msg.sender) {
     CreatorTokenManager public creatorTokenManagerInstance;
@@ -14,6 +14,7 @@ contract SHABzPlatform is Ownable (msg.sender) {
     // Mapping to track user engagement points for gamification
     mapping(address => uint256) public userPoints;
     mapping(address => bool) public isCreator;
+    mapping(address => bool) public isUser;
     
     // Collaboration structure to represent multi-creator projects
     struct Collaboration {
@@ -45,6 +46,8 @@ contract SHABzPlatform is Ownable (msg.sender) {
     //  USER & CREATOR REGISTRATION
     
     function registerUser() external {
+        require(!isUser[msg.sender], "Already registered as User");
+        isUser[msg.sender] = true;
         emit UserRegistered(msg.sender);
     }
     
@@ -100,4 +103,3 @@ contract SHABzPlatform is Ownable (msg.sender) {
         emit AirdropDistributed(user, amount);
     }
 }
-

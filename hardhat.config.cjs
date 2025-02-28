@@ -1,5 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config(); // Load environment variables
+require("@nomicfoundation/hardhat-verify");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -9,15 +10,32 @@ module.exports = {
     localhost: {
       url: "http://127.0.0.1:8545", 
   },
-  
-  sepolia: {
-     url: process.env.SEPOLIA_RPC_URL || "", 
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [], 
-    
-  },
+
+  'lisk-sepolia': {
+      url: 'https://rpc.sepolia-api.lisk.com',
+      accounts: [process.env.WALLET_KEY ],
+      gasPrice: 1000000000,
+    },
 },
 etherscan: {
-  apiKey: process.env.ETHERSCAN_API_KEY, 
+  // Use "123" as a placeholder, because Blockscout doesn't need a real API key, and Hardhat will complain if this property isn't set.
+  apiKey: {
+    "lisk-sepolia": "123"
+  },
+  customChains: [
+    {
+        network: "lisk-sepolia",
+        chainId: 4202,
+        urls: {
+            apiURL: "https://sepolia-blockscout.lisk.com/api",
+            browserURL: "https://sepolia-blockscout.lisk.com"
+        }
+    }
+  ]
 },
-}
+sourcify: {
+  enabled: false
+},
+};
+
 

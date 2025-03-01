@@ -1,4 +1,4 @@
-import { Button } from "../components/ui/button";
+import {Button} from "../components/ui/button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi"; // Import useAccount hook
 import { useNavigate } from "react-router-dom"; // Import React Router navigation

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 import { registerUser, registerCreator } from "../BlockchainServices/ShabzHooks";
 import { useToast } from "../hooks/use-toast";
@@ -17,7 +17,7 @@ const Marketplace: React.FC = () => {
           description: `User registration complete. Transaction hash: ${hash.slice(0, 10)}...`,
           variant: "default",
           duration: 5000,
-          icon: <CheckCircle className="h-5 w-5 text-green-500" />
+          
         });
       } catch(error) {
         console.error(`error: ${error}`);
@@ -26,7 +26,7 @@ const Marketplace: React.FC = () => {
           description: "Failed to register user. Please try again.",
           variant: "destructive",
           duration: 5000,
-          icon: <AlertCircle className="h-5 w-5" />
+
         });
       }
     } else {
@@ -37,7 +37,7 @@ const Marketplace: React.FC = () => {
           description: `Creator registration complete. Transaction hash: ${hash.slice(0, 10)}...`,
           variant: "default",
           duration: 5000,
-          icon: <CheckCircle className="h-5 w-5 text-green-500" />
+          
         });
       } catch(error) {
         console.error(`error: ${error}`);
@@ -46,7 +46,6 @@ const Marketplace: React.FC = () => {
           description: "Failed to register creator. Please try again.",
           variant: "destructive", 
           duration: 5000,
-          icon: <AlertCircle className="h-5 w-5" />
         });
       }
     }

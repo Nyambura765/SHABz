@@ -169,9 +169,9 @@ We welcome contributions! Please follow these steps:
 MIT License
 
 ## Appendices
-1. Smart Contract Repository: [Link](https://github.com/Nyambura765/SBABz/contracts)
+1. Smart Contract Repository: [Link](https://github.com/Nyambura765/SHABz/contracts)
 2. Testnet Deployment: [Link](https://sepolia-blockscout.lisk.com/address/0x296EA797C9A5935c4447e638a7a7ce04c1039259)
-3. Live Demo: [Link](https://beta.shabz-platform.com)
+3. Live Demo: [Link]()
 ```
 
  

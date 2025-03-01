@@ -67,10 +67,11 @@ const TokenCreationForm = () => {
   const [formValues, setFormValues] = useState<FormValues>({
     name: '',
     symbol: '',
-    tier: 'gold',
+    tierName: 'gold',
+    tierId:'',
     price: 0,
-    initialSupply: 0,
-    description: ''
+    maxSupply: 0,
+    token: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -96,13 +97,14 @@ const TokenCreationForm = () => {
       const createHash = await createToken(formValues.name, formValues.symbol)
 
       if (createHash) {
-         const address=await getTokenAddress();
-        const addTierHash = await addTier(formValues.tierName, formValues.tierId, formValues.token, formValues.price, formValues.maxSupply);
+        const address =await getTokenAddress();
+        const addTierHash = await addTier(formValues.price, formValues.maxSupply, formValues.tierName, formValues.tierId, address);
         if (addTierHash) {
           alert('Token and Tier created successfully!');
         }
       }
         
+       
     } catch (error) {
       console.error(`error: ${error}`);
       if (error instanceof Error) {
@@ -150,7 +152,7 @@ const TokenCreationForm = () => {
               <label className="block mb-2 text-sm font-medium">Tier</label>
               <select 
                 name='tier' 
-                value={formValues.tier}
+                value={formValues.tierName}
                 onChange={handleChange}
                 className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent"
               >
@@ -179,8 +181,8 @@ const TokenCreationForm = () => {
               <label className="block mb-2 text-sm font-medium">Initial Supply</label>
               <input 
                 type="number" 
-                name='initialSupply'
-                value={formValues.initialSupply}
+                name='maxSupply'
+                value={formValues.maxSupply}
                 onChange={handleChange}
                 min={10}
                 max={1000000}
@@ -202,79 +204,114 @@ const TokenCreationForm = () => {
   );
 };
 
-// NFT Minting Form Component
+
 const NFTMintingForm = () => {
+  const [properties, setProperties] = useState([{ property: '', value: '' }]);
+  
+  const addProperty = () => {
+    setProperties([...properties, { property: '', value: '' }]);
+  };
+  
+  const handlePropertyChange = (index: number, field: 'property' | 'value', value: string) => {
+    const updatedProperties = [...properties];
+    updatedProperties[index][field] = value;
+    setProperties(updatedProperties);
+  };
+  
   return (
-    <div className=" bg-opacity-50 rounded-xl p-6 shadow-lg">
+    <form className=" bg-opacity-50 rounded-xl p-6 shadow-lg max-w-4xl mx-auto">
       <h3 className="text-xl font-bold mb-6">NFT Minting</h3>
       
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center text-center">
-            <div className="h-16 w-16 rounded-full flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="h-16 w-16 rounded-full bg-teal-100 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
             </div>
             <p className="mb-2">Drag and drop artwork here</p>
-            <p className="text-xs text-indigo-300 mb-4">Supports JPG, PNG, GIF, SVG, MP4</p>
-            <button className="px-4 py-2 bg-teal-700 rounded-lg text-sm">
+            <p className="text-xs text-gray-500 mb-4">Supports JPG, PNG, GIF, SVG, MP4</p>
+            <label className="px-4 py-2 bg-teal-700 text-white rounded-lg text-sm cursor-pointer hover:bg-teal-800 transition">
               Browse Files
-            </button>
+              <input type="file" className="hidden" accept=".jpg,.jpeg,.png,.gif,.svg,.mp4" />
+            </label>
           </div>
           
           <div>
-            <label className="block mb-2 text-sm font-medium">Price (ETH)</label>
+            <label htmlFor="price" className="block mb-2 text-sm font-medium">Price (ETH)</label>
             <input 
+              id="price"
               type="number" 
-              className="w-full p-3  rounded-lg border  focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+              min="0"
+              step="0.001"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
               placeholder="e.g. 0.05"
+              required
             />
           </div>
           
           <div>
-            <label className="block mb-2 text-sm font-medium">Royalties (%)</label>
+            <label htmlFor="royalties" className="block mb-2 text-sm font-medium">Royalties (%)</label>
             <input 
+              id="royalties"
               type="number" 
-              className="w-full p-3 rounded-lg border  focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+              min="0"
+              max="50"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
               placeholder="e.g. 10"
+              required
             />
           </div>
         </div>
         
         <div className="space-y-4">
           <div>
-            <label className="block mb-2 text-sm font-medium">Title</label>
+            <label htmlFor="title" className="block mb-2 text-sm font-medium">Title</label>
             <input 
+              id="title"
               type="text" 
-              className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
               placeholder="e.g. Cosmic Dreamer #1"
+              required
             />
           </div>
           
           <div>
-            <label className="block mb-2 text-sm font-medium">Description</label>
+            <label htmlFor="description" className="block mb-2 text-sm font-medium">Description</label>
             <textarea 
-              className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent h-32" 
+              id="description"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-700 focus:border-transparent h-32" 
               placeholder="Describe your NFT..."
+              required
             ></textarea>
           </div>
           
           <div>
             <label className="block mb-2 text-sm font-medium">Properties & Metadata</label>
-            <div className="flex gap-2 mb-2">
-              <input 
-                type="text" 
-                className="flex-1 p-3 rounded-lg border " 
-                placeholder="Property"
-              />
-              <input 
-                type="text" 
-                className="flex-1 p-3 rounded-lg border " 
-                placeholder="Value"
-              />
-            </div>
-            <button className="text-sm text-teal-400 flex items-center gap-1">
+            {properties.map((item, index) => (
+              <div key={index} className="flex gap-2 mb-2">
+                <input 
+                  type="text" 
+                  className="flex-1 p-3 rounded-lg border border-gray-300" 
+                  placeholder="Property"
+                  value={item.property}
+                  onChange={(e) => handlePropertyChange(index, 'property', e.target.value)}
+                />
+                <input 
+                  type="text" 
+                  className="flex-1 p-3 rounded-lg border border-gray-300" 
+                  placeholder="Value"
+                  value={item.value}
+                  onChange={(e) => handlePropertyChange(index, 'value', e.target.value)}
+                />
+              </div>
+            ))}
+            <button 
+              type="button" 
+              className="text-sm text-teal-600 flex items-center gap-1 hover:text-teal-800"
+              onClick={addProperty}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
@@ -285,13 +322,17 @@ const NFTMintingForm = () => {
       </div>
       
       <div className="mt-6 flex justify-end">
-        <button className="px-6 py-3 bg-teal-500 font-medium rounded-lg hover:bg-teal-700 transition">
+        <button 
+          type="submit"
+          className="px-6 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition"
+        >
           Mint NFT
         </button>
       </div>
-    </div>
+    </form>
   );
 };
+
 
 // Dashboard Content Component
 const CreatorDashboardContent = () => {

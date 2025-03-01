@@ -9,7 +9,6 @@ SHABz is a Social Token Platform designed to revolutionize fan-creator engagemen
 ## Features
 - Token Minting and Management: Creators can mint tiered tokens converted into "gifts" with varying levels of exclusivity.
 - Accumulate individual tokens exchangeable for event tickets
-- Generate one-time QR codes for secure benefit redemption
 - Mint and bid on creator NFTs in the marketplace
 - Participate in interactive engagement activities for token rewards
 - Access exclusive creator content and merchandise
@@ -17,13 +16,19 @@ SHABz is a Social Token Platform designed to revolutionize fan-creator engagemen
 - Multiple payment options including M-Pesa, ETH, and stablecoins
 - Secure escrow system for all transactions
 
+## Future Implentations
+- Platform to host content by creators
+- AI for content recommendation
+- Enhanced gaming features for better engagement between creators and fans
+- Backend Implementation
+- Database for profile management
+
+
 ## Technical Stack
 - Frontend: React+Typescript
 - UI Components:Redux-UI, Tailwind CSS
 - Web3 Integration: Wagmi,Viem,Rainbowtoolkit
 - Wallet Connect: RainbowToolkit
-- Backend: Node.js, Express
-- Database: MongoDB
 - Blockchain: Ethereum  (ERC-20, ERC-721)
 - Payment Processing: M-Pesa API, Web3 payment handlers
 - Contracts deployed on Lisk Sepolia
@@ -39,8 +44,8 @@ SHABz is a Social Token Platform designed to revolutionize fan-creator engagemen
 
 1. Clone this repository
 ```bash
-git clone <repository-url>
-cd shabz-platform
+git clone https://github.com/Nyambura765/SHABz
+cd shabz-hub
 ```
 
 2. Install dependencies:
@@ -56,10 +61,10 @@ npm run dev
 ## Environment Variables
 Create a `.env` file with:
 ```
-MONGODB_URI=your_mongodb_connection_string
+
 ETH_RPC_URL=your_ethereum_rpc_url
-MPESA_API_KEY=your_mpesa_api_key
-JWT_SECRET=your_jwt_secret_key
+LISK_RPC_URL = your_lisk_rpc_url
+
 ```
 
 ## Usage Guide
@@ -93,15 +98,6 @@ JWT_SECRET=your_jwt_secret_key
 5. Present the QR code at events or scan for digital content access.
 6. The QR becomes invalid after single use.
 
-
-### Creating and Hosting Activities (Creators)
-1. Navigate to the "Creator Dashboard" > "Engagement" tab.
-2. Click "Create New Activity".
-3. Select activity type (game, challenge, quiz).
-4. Define token rewards and participation criteria.
-5. Set activity duration and other parameters.
-6. Launch the activity and notify your fans.
-7. Monitor participation and distribute rewards.
 
 
 
@@ -157,7 +153,6 @@ The ShabzEscrow contract secures all financial transactions:
 - Multi-signature verification for high-value transactions
 
 ## Security Features
-- One-time QR code generation for secure benefit redemption
 - Escrow system for all marketplace transactions
 - Smart contract auditing and security testing
 - Transparent transaction history and audit trails
@@ -174,10 +169,9 @@ We welcome contributions! Please follow these steps:
 MIT License
 
 ## Appendices
-1. Smart Contract Repository: [Link](https://github.com/shabz-platform/contracts)
-2. Testnet Deployment: [Link](https://sepolia.etherscan.io/address/0x...)
-3. API Documentation: [Link](https://docs.shabz-platform.com/api)
-4. Live Demo: [Link](https://beta.shabz-platform.com)
+1. Smart Contract Repository: [Link](https://github.com/Nyambura765/SBABz/contracts)
+2. Testnet Deployment: [Link](https://sepolia-blockscout.lisk.com/address/0x296EA797C9A5935c4447e638a7a7ce04c1039259)
+3. Live Demo: [Link](https://beta.shabz-platform.com)
 ```
 
  

@@ -1,27 +1,53 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 import { registerUser, registerCreator } from "../BlockchainServices/ShabzHooks";
+import { useToast } from "../hooks/use-toast";
 
 const Marketplace: React.FC = () => {
+  const { toast } = useToast();
 
   const handleRegister = async (role: string) => {
     if (role === "User") {
       try {
         const hash = await registerUser();
-        alert(`User registration successful. Transaction hash: ${hash}`);
+        toast({
+          title: "Registration Successful",
+          description: `User registration complete. Transaction hash: ${hash.slice(0, 10)}...`,
+          variant: "default",
+          duration: 5000,
+          icon: <CheckCircle className="h-5 w-5 text-green-500" />
+        });
       } catch(error) {
         console.error(`error: ${error}`);
-        alert("Failed to register user");
+        toast({
+          title: "Registration Failed",
+          description: "Failed to register user. Please try again.",
+          variant: "destructive",
+          duration: 5000,
+          icon: <AlertCircle className="h-5 w-5" />
+        });
       }
     } else {
       try {
         const hash = await registerCreator();
-        alert(`Creator registration successful. Transaction hash: ${hash}`);
+        toast({
+          title: "Registration Successful",
+          description: `Creator registration complete. Transaction hash: ${hash.slice(0, 10)}...`,
+          variant: "default",
+          duration: 5000,
+          icon: <CheckCircle className="h-5 w-5 text-green-500" />
+        });
       } catch(error) {
         console.error(`error: ${error}`);
-        alert("Failed to register creator");
+        toast({
+          title: "Registration Failed",
+          description: "Failed to register creator. Please try again.",
+          variant: "destructive", 
+          duration: 5000,
+          icon: <AlertCircle className="h-5 w-5" />
+        });
       }
     }
   };

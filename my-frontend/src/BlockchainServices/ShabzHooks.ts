@@ -1,5 +1,5 @@
 import { createPublicClient, createWalletClient, custom, http,  } from "viem";
-import { contractAbiShabzPlatform, contractAddressShabzPlatform, contractAbiNFT, contractAddressNFT, contractAbiNFTMarketplace, contractAddressNFTMarketplace, contractAbiPaymentEscrow, contractAddressPaymentEscrow, contractAbiTokenManager, contractAddressTokenManager,contractAbi, contractAddress } from "./core";
+import { contractAbiShabzPlatform, contractAddressShabzPlatform, contractAbiNFTMarketplace, contractAddressNFTMarketplace, contractAbiPaymentEscrow, contractAddressPaymentEscrow, contractAbiTokenManager, contractAddressTokenManager,contractAbi, contractAddress } from "./core";
 import { liskSepolia } from 'viem/chains'
 
 
@@ -30,7 +30,7 @@ export async function getWalletClient() {
 //Register users  hooks
 export async function registerUser() {
     try {
-        const {walletClient, address} = await getWalletClient();
+        const { address, walletClient } = await getWalletClient();
 
         const { request } = await publicClient.simulateContract({
             address: contractAddressShabzPlatform,
@@ -45,7 +45,6 @@ export async function registerUser() {
         return hash
     } catch (error) {
         console.error(`error----->: ${error}`)
-        alert(`ERROR: ${error}`)
         throw new Error('Failed to register user')
     }
 }
@@ -66,54 +65,11 @@ export async function registerCreator() {
         return hash
     } catch (error) {
         console.error(`error----->: ${error}`)
-        alert(`ERROR: ${error}`)
         throw new Error('Failed to register creator')
     }
 }
-//Mint NFT hooks
-export async function mintNFT(tokenURI: string) {
-    try {
-        const {walletClient, address} = await getWalletClient();
 
-        const { request } = await publicClient.simulateContract({
-            address: contractAddressNFT,
-            abi: contractAbiNFT,
-            functionName: 'mint',
-            args: [tokenURI],
-            account: address
-        })
 
-        const hash = await walletClient.writeContract(request)
-
-        return hash
-    } catch (error) {
-        console.error(`error----->: ${error}`)
-        alert(`ERROR: ${error}`)
-        throw new Error('Failed to mint NFT')
-    }
-}
-//list NFTs
-export async function listNFT(tokenId: number, price: string) {
-    try {
-        const {walletClient, address} = await getWalletClient();
-
-        const { request } = await publicClient.simulateContract({
-            address: contractAddressNFTMarketplace,
-            abi: contractAbiNFTMarketplace,
-            functionName: 'list',
-            args: [tokenId, price],
-            account: address
-        })
-
-        const hash = await walletClient.writeContract(request)
-
-        return hash
-    } catch (error) {
-        console.error(`error----->: ${error}`)
-        alert(`ERROR: ${error}`)
-        throw new Error('Failed to list NFT')
-    }
-}
 //buy NFTs
 export async function buyNFT(tokenId: number) {
     try {
@@ -250,7 +206,7 @@ export async function getTokenBalance() {
 //generate random number
 export async function generateRandomNumber() {
     try {
-        const {walletClient, address} = await getWalletClient();
+        const {address} = await getWalletClient();
 
         const { request } = await publicClient.simulateContract({
             address: contractAddress,
@@ -360,7 +316,7 @@ export async function burnToken(amount: string) {
 //get airdrop
 export async function getAirdrop() {
     try {
-        const {address} = await getWalletClient();
+        const {address, walletClient} = await getWalletClient();
 
         const { request } = await publicClient.simulateContract({
             address: contractAddressTokenManager,
@@ -370,7 +326,7 @@ export async function getAirdrop() {
             account: address
         })
 
-        const hash = await publicClient.writeContract(request)
+        const hash = await walletClient.writeContract(request)
 
         return hash
     } catch (error) {
@@ -421,5 +377,28 @@ export async function getTokenAddress() {
         console.error(`error----->: ${error}`)
         alert(`ERROR: ${error}`)
         throw new Error('Failed to get token address')
+    }
+}
+
+//Mint and List NFTs hook
+
+export async function mintAndListNFT (metadata:string, price:number) {
+    const {address} = await getWalletClient();
+
+    try {
+        const { request } = await publicClient.simulateContract({
+            address: contractAddressTokenManager,
+            abi: contractAbiTokenManager,
+            functionName: 'mintAndListNFT',
+            args: [metadata,price],
+            account: address
+        })
+
+        const hash = await publicClient.readContract(request)
+
+        return hash
+
+    } catch (error) {
+        throw new Error((error as Error).message);
     }
 }

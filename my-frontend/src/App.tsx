@@ -45,8 +45,9 @@ const App = () => (
       <BrowserRouter>
         
           <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route  path="/marketplace"   element={<Marketplace />}   />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+           <Route path="/home" element={<Home />} />
+           <Route  path="/marketplace"   element={<Marketplace />}   />
             <Route path="/nfts" element={  <NFTCard />  } />
             <Route  path="/tokens"  element={    <TokenCard />  } />
             <Route path="/forcreators" element={<Creators />} />

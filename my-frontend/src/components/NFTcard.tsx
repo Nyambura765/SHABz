@@ -111,9 +111,9 @@ const NFTCard: React.FC = () => {
       <div className="min-h-screen text-white">
         {/* Secondary navigation */}
         <div className="container mx-auto p-6 flex justify-center items-center">
-          <div className="flex space-x-8">
-            <Link to="/nfts" className="text-white hover:text-purple-300">NFTs</Link>
-            <Link to="/tokens" className="hover:text-purple-300">Tokens</Link>
+          <div className="flex space-x-8 ">
+            <Link to="/nfts" className="text-purple-600 hover:text-black">NFTs</Link>
+            <Link to="/tokens" className="text-purple-600 hover:text-black">Tokens</Link>
           </div>
         </div>
 

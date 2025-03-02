@@ -98,9 +98,9 @@ const Token = () => {
     <Navbar />
     <div className="min-h-screen text-white">
           <nav className="container mx-auto p-6 flex justify-center items-center">
-           <div className="hidden md:flex space-x-8">
-              <Link to="/nfts" className="hover:text-purple-300">NFTs</Link>
-              <Link to="/tokens" className="hover:text-purple-300">Tokens</Link>
+           <div className="flex space-x-8">
+              <Link to="/nfts" className="text-black hover:text-purple-300">NFTs</Link>
+              <Link to="/tokens" className="text-black hover:text-purple-300">Tokens</Link>
             </div>
           </nav>
     <div className="min-h-screen px-6 py-12 max-w-[1400px] mx-auto text-white">

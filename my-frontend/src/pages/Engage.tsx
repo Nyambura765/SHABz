@@ -107,7 +107,7 @@ export default function Engage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen text-white">
+      <div className="min-h-screen text-white ">
         {/* Reduce padding-top (pt) from pt-24 to pt-8 to decrease the space */}
         <main className="container mx-auto px-4 pt-8">
           <section className="text-center space-y-4 mb-12">

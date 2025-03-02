@@ -98,7 +98,7 @@ const EventCard = ({ event }: { event: Event }) => {
     <div className={`rounded-xl p-6 border border-border/5 hover:border-border/20 transition-all duration-300 animate-fade-up bg-gradient-to-b ${getGradientByType(event.type)} hover:translate-y-[-4px] group`}>
       <div className="aspect-video rounded-lg overflow-hidden mb-4 relative">
         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300 z-10">
-          <button className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg text-white border border-white/20 flex items-center gap-2 transform -translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+          <button className="px-4 py-2 bg-black backdrop-blur-sm rounded-lg text-white border border-white/20 flex items-center gap-2 transform -translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
             View Details <ChevronRight className="w-4 h-4" />
           </button>
         </div>

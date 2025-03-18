@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { BarChart, LineChart } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
-import { createToken, addTier, getTokenAddress } from '../BlockchainServices/ShabzHooks';
+import { createToken } from '../BlockchainServices/ShabzHooks';
 
 interface FormValues {
   name: string;
   symbol: string;
-  tierName: string;
-  tierId: string;
-  price: number;
-  maxSupply: number;
-  token: string;
+  goldPrice:string;
+  goldSupply:string;
+  silverPrice:string;
+  silverSupply:string;
+  bronzePrice:string;
+  bronzeSupply:string;
 }
 
 const CreatorDashboard = () => {
@@ -67,11 +68,12 @@ const TokenCreationForm = () => {
   const [formValues, setFormValues] = useState<FormValues>({
     name: '',
     symbol: '',
-    tierName: 'gold',
-    tierId:'',
-    price: 0,
-    maxSupply: 0,
-    token: ''
+    goldPrice: '',
+    goldSupply: '',
+    silverPrice: '',
+    silverSupply: '',
+    bronzePrice: '',
+    bronzeSupply: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -94,16 +96,12 @@ const TokenCreationForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const createHash = await createToken(formValues.name, formValues.symbol)
+      //do operation
+      const { receipt, tokenAddress } = await createToken(formValues.name, formValues.symbol)
 
-      if (createHash) {
-        const address =await getTokenAddress();
-        const addTierHash = await addTier(formValues.price, formValues.maxSupply, formValues.tierName, formValues.tierId, address);
-        if (addTierHash) {
-          alert('Token and Tier created successfully!');
-        }
+      if(receipt){
+        alert(`Deployed Successfully: ${receipt} Address: ${tokenAddress}`)
       }
-        
        
     } catch (error) {
       console.error(`error: ${error}`);
@@ -117,12 +115,11 @@ const TokenCreationForm = () => {
   }
 
   return (
-    <div className=" bg-opacity-50 rounded-xl p-6 shadow-lg">
+    <div className=" bg-opacity-50 rounded-xl p-6 shadow-lg grid place-items-center">
       <h3 className="text-xl font-bold mb-6">Token Creation</h3>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-4">
+      <form onSubmit={handleSubmit} className='grid place-items-center'>
+        <div className="shadow-sm shadow-teal-500 p-2 rounded-lg">
+          <div className="space-y-4 grid place-items-center p-2">
             <div>
               <label className="block mb-2 text-sm font-medium">Name of the Token</label>
               <input 
@@ -148,51 +145,91 @@ const TokenCreationForm = () => {
               />
             </div>
             
-            <div>
-              <label className="block mb-2 text-sm font-medium">Tier</label>
-              <select 
-                name='tier' 
-                value={formValues.tierName}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent"
-              >
-                <option value='gold'>Gold</option>
-                <option value='silver'>Silver</option>
-                <option value='bronze'>Bronze</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block mb-2 text-sm font-medium">Price (ETH)</label>
-              <input 
-                type="number" 
-                name='price'
-                value={formValues.price}
-                onChange={handleChange}
-                required
-                min={0.001}
-                step={0.001}
-                className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
-                placeholder="e.g. 0.05"
-              />
-            </div>
-            
-            <div>
-              <label className="block mb-2 text-sm font-medium">Initial Supply</label>
-              <input 
-                type="number" 
-                name='maxSupply'
-                value={formValues.maxSupply}
-                onChange={handleChange}
-                min={10}
-                max={1000000}
-                className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
-                placeholder="e.g. 1,000,000"
-              />
+            <div  className='grid grid-cols-1 md:grid-cols-3 gap-2'>
+              <div>
+                <h2>Gold</h2>
+                <div>
+                  <label className="block mb-2 text-sm font-medium">Supply</label>
+                  <input 
+                    type="text" 
+                    name='goldSupply'
+                    value={formValues.goldSupply}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+                    placeholder="1000"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium">Price</label>
+                  <input 
+                    type="text" 
+                    name='goldPrice'
+                    value={formValues.goldPrice}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+                    placeholder="0.1"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <h2>Silver</h2>
+                <div>
+                  <label className="block mb-2 text-sm font-medium">Supply</label>
+                  <input 
+                    type="text" 
+                    name='silverSupply'
+                    value={formValues.silverSupply}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+                    placeholder="10000"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium">Price</label>
+                  <input 
+                    type="text" 
+                    name='silverPrice'
+                    value={formValues.silverPrice}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+                    placeholder="0.01"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <h2>Bronze</h2>
+                <div>
+                  <label className="block mb-2 text-sm font-medium">Supply</label>
+                  <input 
+                    type="text" 
+                    name='bronzeSupply'
+                    value={formValues.bronzeSupply}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+                    placeholder="100000"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium">Price</label>
+                  <input 
+                    type="text" 
+                    name='bronzePrice'
+                    value={formValues.bronzePrice}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-teal-700 focus:border-transparent" 
+                    placeholder="0.001"
+                    required
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        
         <div className="mt-6 flex justify-end">
           <button type="submit" className="px-6 py-3 bg-teal-700 font-medium rounded-lg hover:bg-teal-700 transition">
             Create Token
@@ -200,7 +237,6 @@ const TokenCreationForm = () => {
         </div>
       </form>
     </div>
-    
   );
 };
 

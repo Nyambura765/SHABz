@@ -8,9 +8,11 @@ const Home = () => {
   return (
     <div className="min-h-screen ">
       <Navbar />
+      <div>
       <Hero />
       <Features />
       <HowItWorks />
+      </div>
       <Footer />
     </div>
   );

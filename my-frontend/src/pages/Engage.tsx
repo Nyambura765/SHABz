@@ -107,11 +107,11 @@ export default function Engage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen text-white ">
+      <div className="min-h-screen text-black-400">
         {/* Reduce padding-top (pt) from pt-24 to pt-8 to decrease the space */}
         <main className="container mx-auto px-4 pt-8">
           <section className="text-center space-y-4 mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold neon-text">
+            <h1 className="text-4xl md:text-5xl font-bold neon-text ">
               Engage & Earn
             </h1>
             <p className="text-gray-400 max-w-2xl mx-auto">

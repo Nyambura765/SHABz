@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\CreatorTokenManager.sol": {
-      "lastModificationDate": 1740740461697,
-      "contentHash": "24e198f4acabd2f60a402382a35e8db5",
+      "lastModificationDate": 1741799277456,
+      "contentHash": "a2d2032db3047dcae2912e8cb9d1b95b",
       "sourceName": "contracts/CreatorTokenManager.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -31,12 +31,14 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./CreatorToken.sol"
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
+        "CreatorToken",
         "CreatorTokenManager"
       ]
     },
@@ -531,8 +533,8 @@
       ]
     },
     "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\ShabzPlatform.sol": {
-      "lastModificationDate": 1740487197107,
-      "contentHash": "5a416900c1540570e2a4fb30fca51e76",
+      "lastModificationDate": 1741613563687,
+      "contentHash": "9e120cbce7143aa412e524b9f7de50bf",
       "sourceName": "contracts/ShabzPlatform.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -559,10 +561,7 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "./CreatorTokenManager.sol",
-        "./NFTMarketplace.sol",
-        "./PaymentEscrow.sol"
+        "@openzeppelin/contracts/access/Ownable.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -571,48 +570,9 @@
         "SHABzPlatform"
       ]
     },
-    "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\CreatorToken.sol": {
-      "lastModificationDate": 1740615953140,
-      "contentHash": "da306a6852a299e57e312dba11f57d97",
-      "sourceName": "contracts/CreatorToken.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "@openzeppelin/contracts/access/Ownable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "CreatorToken"
-      ]
-    },
     "C:\\Users\\User\\Desktop\\SHABz-Hub\\contracts\\NFTMarketplace.sol": {
-      "lastModificationDate": 1740515856173,
-      "contentHash": "bc23574dcf608662de9f6f760f5dc404",
+      "lastModificationDate": 1741610492846,
+      "contentHash": "c6f09debc2e48f1ca95c5074d95895dd",
       "sourceName": "contracts/NFTMarketplace.sol",
       "solcConfig": {
         "version": "0.8.28",

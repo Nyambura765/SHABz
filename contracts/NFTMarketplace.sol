@@ -30,6 +30,12 @@ contract NFTMarketplace is Ownable {
     mapping(uint256 => address) public nftSeller;
     mapping(uint256 => Auction) public nftAuctions;
     mapping(uint256 => string) public nftUpgrades;
+    // Add mapping for supported NFT collections
+      mapping(address => bool) public supportedCollections;
+
+     // Add royalty information
+    mapping(uint256 => mapping(address => uint256)) public nftRoyalties; // tokenId => creator => percentage
+
     
     event NFTListed(uint256 indexed tokenId, uint256 price, address seller);
     event NFTSold(uint256 indexed tokenId, address buyer, uint256 price);
@@ -81,6 +87,8 @@ contract NFTMarketplace is Ownable {
         delete nftSeller[tokenId];
         emit NFTSold(tokenId, msg.sender, price);
     }
+
+    
 
     function setMarketplaceFee(uint256 newFee) external onlyOwner {
         require(newFee <= 10, "Fee too high");

@@ -1,0 +1,49 @@
+
+    
+    // Deploy the NFT contract 
+    const NFTFactory = await hre.ethers.getContractFactory("NFT");
+    const nftContract = await NFTFactory.deploy();
+    await nftContract. waitForDeployment();
+    const nftContractAddress = nftContract.address;
+    console.log("NFT contract deployed at:", nftContractAddress);
+
+    const tokenAddress = "0x6aD7B156Dfc2f7794355673dd2Bc228bDBA6457a"; // Your ERC20 token address
+    const feeRecipient = deployer.address; // or another address that will receive fees
+  
+    // Deploy NFTMarketplace with all required parameters
+    const NFTMarketplace = await hre.ethers.getContractFactory("NFTMarketplace");
+    const nftMarketplace = await NFTMarketplace.deploy(
+        nftContractAddress,  // _nftContract
+        tokenAddress,        // _token
+        feeRecipient,        // _feeRecipient
+        deployer.address     // _owner
+    );
+    await nftMarketplace.deployed();
+    const nftMarketplaceAddress = nftMarketplace.address;
+    console.log("NFTMarketplace deployed at:", nftMarketplaceAddress);
+
+    // Deploy PaymentEscrow contract with correct constructor arguments
+    const PaymentEscrow = await hre.ethers.getContractFactory("PaymentEscrow");
+    const paymentEscrow = await PaymentEscrow.deploy(
+        tokenAddress,     // _stablecoin address
+        deployer.address  // _platformWallet address
+    );
+    await paymentEscrow.deployed();
+    const paymentEscrowAddress = paymentEscrow.address;
+    console.log(`PaymentEscrow deployed at: ${paymentEscrowAddress}`);
+
+    
+    // Deploy Game contract with reward token
+    const Game = await hre.ethers.getContractFactory("Game");
+    const game = await Game.deploy(
+        tokenAddress  // _rewardToken address - using the same token as other contracts
+    );
+    await game.deployed();
+    const gameAddress = game.address;
+    console.log(`Game contract deployed at: ${gameAddress}`);
+
+   
+    console.log("All contracts deployed successfully");
+    
+    
+    console.log("Setting up initial configurations...");
